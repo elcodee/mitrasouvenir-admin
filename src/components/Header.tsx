@@ -1,4 +1,4 @@
-import { AiOutlineBell, AiOutlineClockCircle, AiOutlineFileDone, AiOutlineHdd, AiOutlineHome, AiOutlineLogout } from "react-icons/ai";
+import { AiOutlineBell, AiOutlineClockCircle, AiOutlineFileDone, AiOutlineFileImage, AiOutlineFundProjectionScreen, AiOutlineHdd, AiOutlineHome, AiOutlineLogout, AiOutlineShopping } from "react-icons/ai";
 
 export default function Header() {
   return (
@@ -166,6 +166,24 @@ export default function Header() {
                     >
                         <AiOutlineHome fontSize={18} />
                       <span data-key="t-horizontal">Home</span>
+                    </a>
+                  </li>
+                  <li className="nav-item">
+                    <a
+                      className="nav-link arrow-none"
+                      href="/product"
+                    >
+                        <AiOutlineShopping fontSize={18} />
+                      <span data-key="t-horizontal">Produk</span>
+                    </a>
+                  </li>
+                  <li className="nav-item">
+                    <a
+                      className="nav-link arrow-none"
+                      href="/slide-show"
+                    >
+                        <AiOutlineFundProjectionScreen fontSize={18} />
+                      <span data-key="t-horizontal">Slider Image</span>
                     </a>
                   </li>
                   <li className="nav-item">

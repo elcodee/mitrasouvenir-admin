@@ -1,4 +1,9 @@
-import { AiOutlineEdit, AiOutlineEye, AiOutlineHdd, AiOutlineShopping } from "react-icons/ai";
+import {
+  AiOutlineEdit,
+  AiOutlineEye,
+  AiOutlineHdd,
+  AiOutlineShopping,
+} from "react-icons/ai";
 import Footer from "../../components/Footer";
 import Header from "../../components/Header";
 
@@ -39,7 +44,10 @@ export default function Dashboard() {
                             Total Produk
                           </h6>
                           <h4 className="mt-4 font-weight-bold mb-2 d-flex align-items-center">
-                            <AiOutlineShopping fontSize={22} style={{ marginBottom: 2, marginRight: 3}} />
+                            <AiOutlineShopping
+                              fontSize={22}
+                              style={{ marginBottom: 2, marginRight: 3 }}
+                            />
                             95
                           </h4>
                           <div className="text-muted">Produk Tersedia</div>
@@ -48,10 +56,13 @@ export default function Dashboard() {
                           <div className="dropdown">
                             <a
                               className="dropdown-toggle btn btn-light btn-sm"
-                              href="#!"
+                              href="/products"
                             >
                               <span className="text-muted">
-                              <AiOutlineHdd fontSize={12} style={{ marginBottom: 3, marginRight: 3 }} />
+                                <AiOutlineHdd
+                                  fontSize={12}
+                                  style={{ marginBottom: 3, marginRight: 3 }}
+                                />
                                 Kelola Produk
                               </span>
                             </a>
@@ -76,7 +87,10 @@ export default function Dashboard() {
                             Total Pengunjung
                           </h6>
                           <h4 className="mt-4 font-weight-bold mb-2 d-flex align-items-center">
-                          <AiOutlineEye fontSize={22} style={{ marginBottom: 2, marginRight: 3}} />
+                            <AiOutlineEye
+                              fontSize={22}
+                              style={{ marginBottom: 2, marginRight: 3 }}
+                            />
                             33.712
                           </h4>
                           <div className="text-muted">Total Pengunjung</div>
@@ -88,7 +102,10 @@ export default function Dashboard() {
                               href="#!"
                             >
                               <span className="text-muted">
-                              <AiOutlineEye fontSize={12} style={{ marginBottom: 3, marginRight: 3 }} />
+                                <AiOutlineEye
+                                  fontSize={12}
+                                  style={{ marginBottom: 3, marginRight: 3 }}
+                                />
                                 Kelola Pengunjung
                               </span>
                             </a>
@@ -106,7 +123,7 @@ export default function Dashboard() {
               {/* end row*/}
               <div className="row">
                 {/* end col*/}
-                <div className="col-xl-8">
+                <div className="col-xl-12">
                   <div className="card card-h-100">
                     <div className="card-body">
                       <h4 className="card-title mb-4">Sales Analytics</h4>
@@ -153,14 +170,15 @@ export default function Dashboard() {
                 {/* end col*/}
               </div>
               {/* end row */}
-              <div className="row">
-                <div className="col-xl-8">
+              {/* <div className="row">
+                <div className="col-xl-12">
                   <div className="card">
                     <div className="card-body">
                       <div className="d-flex justify-content-between">
-                        <h4 className="card-title mb-4">Produk Sering Dilihat</h4>
-                        <div>
-                        </div>
+                        <h4 className="card-title mb-4">
+                          Produk Sering Dilihat
+                        </h4>
+                        <div></div>
                       </div>
                       <div className="table-responsive">
                         <table className="table table-hover table-nowrap mb-0 align-middle">
@@ -173,12 +191,11 @@ export default function Dashboard() {
                                 Edit
                               </th>
                             </tr>
-                            {/* end tr */}
                           </thead>
-                          {/* end thead */}
+
                           <tbody>
                             <tr>
-                            <td>
+                              <td>
                                 <div className="d-flex align-items-center">
                                   <div className="me-2">
                                     <img
@@ -192,17 +209,14 @@ export default function Dashboard() {
                               <td className="fw-medium">Tumblr 1</td>
                               <td>819 x</td>
                               <td>
-                                  <a
-                                    href="#!"
-                                  >
-                                    {/* <i className="mdi mdi-dots-horizontal font-size-18 text-muted" /> */}
-                                    <AiOutlineEdit fontSize={20} />
-                                  </a>
+                                <a href="#!">
+                                  <AiOutlineEdit fontSize={20} />
+                                </a>
                               </td>
                             </tr>
-                            {/* end /tr */}
+
                             <tr>
-                            <td>
+                              <td>
                                 <div className="d-flex align-items-center">
                                   <div className="me-2">
                                     <img
@@ -216,32 +230,23 @@ export default function Dashboard() {
                               <td className="fw-medium">Tumblr 2</td>
                               <td>497 x</td>
                               <td>
-                                  <a
-                                    href="#!"
-                                  >
-                                    {/* <i className="mdi mdi-dots-horizontal font-size-18 text-muted" /> */}
-                                    <AiOutlineEdit fontSize={20} />
-                                  </a>
+                                <a href="#!">
+                                  <AiOutlineEdit fontSize={20} />
+                                </a>
                               </td>
                             </tr>
-                            {/* end /tr */}
                           </tbody>
-                          {/* end tbody */}
                         </table>
-                        {/* end table */}
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
-              {/* end row */}
+              </div> */}
             </div>{" "}
-            {/* container-fluid */}
           </div>
-          {/* End Page-content */}
+
           <Footer />
         </div>
-        
       </div>
     </>
   );

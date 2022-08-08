@@ -3,7 +3,7 @@ import { AiOutlineHeart } from "react-icons/ai";
 export default function Footer(){
     return(
         <>
-        <footer className="footer">
+        <footer className="footer fixed-bottom">
           <div className="container-fluid">
             <div className="row">
               <div className="col-sm-6">© 2022 Mitra Souvenir.</div>
