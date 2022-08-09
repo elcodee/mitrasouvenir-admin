@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useNavigate, useNavigationType } from "react-router-dom";
 import Dashboard from "./pages/dashboard";
 import Product from "./pages/product";
 import AddProduct from "./pages/product/all_product/Add";
@@ -10,31 +10,59 @@ import AddSlides from "./pages/slide_show/Add";
 import EditSlides from "./pages/slide_show/Edit";
 import CallToAction from "./pages/call_action";
 import EditCta from "./pages/call_action/Edit";
+import Category from "./pages/category";
+import AddCategory from "./pages/category/Add";
+import EditCategory from "./pages/category/Edit";
+import Login from "./pages/auth";
+import { API } from "./server/endpoint";
+import { useEffect, useState } from "react";
 
 function App() {
-  return (
-    <Routes>
-      <Route path="/" element={<Dashboard />} />
+  const [isLog, setIsLog] = useState<boolean>(false);
+  const checkUser = async () => {
+    const { user } = await API.auth.user();
 
-      {/* Call To Action */}
-      <Route path="/call-to-action" element={<CallToAction />} />
-      <Route path="/call-to-action/edit" element={<EditCta />} />
+    if(user){
+      setIsLog(true);
+    } else {
+      setIsLog(false);
+    }
+  };
 
-      {/* Slide Show Carousel */}
-      <Route path="/slide-show" element={<SlideShow />} />
-      <Route path="/slide-show/add" element={<AddSlides />} />
-      <Route path="/slide-show/edit" element={<EditSlides />} />
 
-      {/* Products */}
-      <Route path="/product" element={<Product />} />
-      <Route path="/products" element={<AllProduct />} />
-      <Route path="/products/add" element={<AddProduct />} />
-      <Route path="/products/edit" element={<EditProduct />} />
+  useEffect(() => {
+    checkUser();
+  }, []);
 
-      <Route path="/products/featured" element={<FeaturedProduct />} />
-
-    </Routes>
-  );
+    return (
+      <Routes>
+        <Route path="/signin" element={<Login />} />
+        <Route path="/" element={isLog ? <Dashboard /> : <Login />} />
+  
+        {/* Call To Action */}
+        <Route path="/call-to-action" element={isLog ? <CallToAction />  : <Login />} />
+        <Route path="/call-to-action/edit/:name" element={isLog ? <EditCta />  : <Login />} />
+  
+        {/* Slide Show Carousel */}
+        <Route path="/slide-show" element={isLog ? <SlideShow />  : <Login />} />
+        <Route path="/slide-show/add" element={isLog ? <AddSlides />  : <Login />} />
+        <Route path="/slide-show/edit" element={isLog ? <EditSlides />  : <Login />} />
+  
+        {/* Category */}
+        <Route path="/category" element={isLog ? <Category />  : <Login />} />
+        <Route path="/category/add" element={isLog ? <AddCategory />  : <Login />} />
+        <Route path="/category/edit/:name" element={isLog ? <EditCategory />  : <Login />} />
+  
+        {/* Products */}
+        <Route path="/product" element={isLog ? <Product />  : <Login />} />
+        <Route path="/products" element={isLog ? <AllProduct />  : <Login />} />
+        <Route path="/products/add" element={isLog ? <AddProduct />  : <Login />} />
+        <Route path="/products/edit" element={isLog ? <EditProduct />  : <Login />} />
+  
+        <Route path="/products/featured" element={isLog ? <FeaturedProduct />  : <Login />} />
+      </Routes>
+    )
+  
 }
 
 export default App;

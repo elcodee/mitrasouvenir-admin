@@ -4,8 +4,11 @@ import Footer from "../../components/Footer";
 import Header from "../../components/Header";
 import AddModal from "./modal/Add";
 import DeleteModal from "./modal/Delete";
+import useLogic from "./Logic"
+import { Loading, Text } from "@nextui-org/react";
 
 export default function CallToAction() {
+  const { datas, loading } = useLogic();
   let navigate = useNavigate();
 
   return (
@@ -52,97 +55,29 @@ export default function CallToAction() {
                           </thead>
                           {/* end thead */}
                           <tbody>
+                            {
+                              loading ?
                             <tr>
-                              <td className="fw-medium">Whatsapp</td>
-                              <td className="fw-medium">08123456789</td>
-                              <td>
-                                  <a
-                                    href="#!"
-                                  >
-                                    {/* <i className="mdi mdi-dots-horizontal font-size-18 text-muted" /> */}
-                                    <button type="button" className="btn btn-outline-secondary" onClick={() => navigate("/call-to-action/edit", { replace: true })}><AiOutlineEdit fontSize={20} /></button>
-                                  </a>
+                              <td className="fw-medium"></td>
+                              <td className="fw-medium"> <Loading type="points-opacity" size="xl" color="primary">
+                              
+                              <Text h5 color="primary">loading ...</Text>
+        </Loading>
                               </td>
-                              {/* <td>
-                                    <DeleteModal />
-                              </td> */}
-                            </tr>
-                            {/* end /tr */}
+                              <td></td>
+                            </tr> : 
+                            datas.map((item: any, index: any) => {
+                              return(
                             <tr>
-                              <td className="fw-medium">Instagram</td>
-                              <td className="fw-medium">@mitrasouvenir</td>
+                              <td className="fw-medium">{item.name}</td>
+                              <td className="fw-medium">{item.value}</td>
                               <td>
-                                  <a
-                                    href="#!"
-                                  >
-                                    {/* <i className="mdi mdi-dots-horizontal font-size-18 text-muted" /> */}
-                                    <button type="button" className="btn btn-outline-secondary" onClick={() => navigate("/call-to-action/edit", { replace: true })}><AiOutlineEdit fontSize={20} /></button>
-                                  </a>
+                                    <button type="button" className="btn btn-outline-secondary" onClick={() => navigate(`/call-to-action/edit/${item.name}`)}><AiOutlineEdit fontSize={20} /></button>
                               </td>
-                              {/* <td>
-                                  <DeleteModal />
-                              </td> */}
                             </tr>
-                            <tr>
-                              <td className="fw-medium">Shopee</td>
-                              <td className="fw-medium">mitra_souvenir</td>
-                              <td>
-                                  <a
-                                    href="#!"
-                                  >
-                                    {/* <i className="mdi mdi-dots-horizontal font-size-18 text-muted" /> */}
-                                    <button type="button" className="btn btn-outline-secondary" onClick={() => navigate("/call-to-action/edit", { replace: true })}><AiOutlineEdit fontSize={20} /></button>
-                                  </a>
-                              </td>
-                              {/* <td>
-                                  <DeleteModal />
-                              </td> */}
-                            </tr>
-                            <tr>
-                              <td className="fw-medium">Tokopedia</td>
-                              <td className="fw-medium">mitra_souvenir</td>
-                              <td>
-                                  <a
-                                    href="#!"
-                                  >
-                                    {/* <i className="mdi mdi-dots-horizontal font-size-18 text-muted" /> */}
-                                    <button type="button" className="btn btn-outline-secondary" onClick={() => navigate("/call-to-action/edit", { replace: true })}><AiOutlineEdit fontSize={20} /></button>
-                                  </a>
-                              </td>
-                              {/* <td>
-                                  <DeleteModal />
-                              </td> */}
-                            </tr>
-                            <tr>
-                              <td className="fw-medium">Workshop</td>
-                              <td className="fw-medium">Jl Raya No 1</td>
-                              <td>
-                                  <a
-                                    href="#!"
-                                  >
-                                    {/* <i className="mdi mdi-dots-horizontal font-size-18 text-muted" /> */}
-                                    <button type="button" className="btn btn-outline-secondary" onClick={() => navigate("/call-to-action/edit", { replace: true })}><AiOutlineEdit fontSize={20} /></button>
-                                  </a>
-                              </td>
-                              {/* <td>
-                                  <DeleteModal />
-                              </td> */}
-                            </tr>
-                            <tr>
-                              <td className="fw-medium">Custome</td>
-                              <td className="fw-medium">08123456789</td>
-                              <td>
-                                  <a
-                                    href="#!"
-                                  >
-                                    {/* <i className="mdi mdi-dots-horizontal font-size-18 text-muted" /> */}
-                                    <button type="button" className="btn btn-outline-secondary" onClick={() => navigate("/call-to-action/edit", { replace: true })}><AiOutlineEdit fontSize={20} /></button>
-                                  </a>
-                              </td>
-                              {/* <td>
-                                  <DeleteModal />
-                              </td> */}
-                            </tr>
+                              )
+                            })
+                            }
                             {/* end /tr */}
                           </tbody>
                           {/* end tbody */}

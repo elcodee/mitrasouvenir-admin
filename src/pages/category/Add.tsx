@@ -1,42 +1,43 @@
-import { Button, Image, Input, Loading } from "@nextui-org/react";
-import { useEffect, useState } from "react";
-import { AiOutlineArrowLeft, AiOutlineSave } from "react-icons/ai";
-import { useNavigate, useParams } from "react-router-dom";
+import { Button, Input, Loading } from "@nextui-org/react";
+import { useState } from "react";
+import {
+  AiOutlineArrowLeft,
+  AiOutlinePlus,
+} from "react-icons/ai";
+import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import Footer from "../../components/Footer";
 import Header from "../../components/Header";
 import useLogic from "./Logic";
 
-export default function EditCta() {
+export default function AddCategory() {
   let navigate = useNavigate();
-  let { name } = useParams();
+  const { createCategory, setLoading, loading } = useLogic();
   const [inputs, setInputs] = useState<any>({});
   const [err, setErr] = useState<any>({
     is: false,
     msg: "",
   });
-  const { data, getCtaByName, updateCtaByID, setLoading, loading } = useLogic();
 
   const inputHandle = (e: any) => {
     setInputs({
       ...inputs,
-      name: name,
       [e.target.name]: e.target.value,
     });
   };
 
-  const updateHandle = async (e: any) => {
+  const createHandle = async (e: any) => {
     setLoading(true);
     if (inputs.value === "") {
       setTimeout(() => {
         setErr({
           is: true,
-          msg: "Value Tidak Boleh Kosong",
+          msg: "Nama Tidak Boleh Kosong",
         });
         setLoading(false);
       }, 1500);
     } else {
-      let res: any = await updateCtaByID(data._id, inputs);
+      let res: any = await createCategory(inputs);
 
       if (res) {
         setTimeout(() => {
@@ -49,29 +50,17 @@ export default function EditCta() {
 
           Toast.fire({
             icon: "success",
-            title: "CTA Updated",
+            title: "Category Created",
           });
         }, 1500);
 
         setTimeout(() => {
-          navigate("/call-to-action/", { replace: true });
+          navigate("/category", { replace: true });
         }, 2500);
       }
     }
   };
 
-  useEffect(() => {
-    let mount = true;
-
-    if (mount) {
-      getCtaByName(name);
-      setInputs({
-        ...inputs,
-        name: name,
-        value: data.value,
-      });
-    }
-  }, [data.value]);
   return (
     <>
       <div id="layout-wrapper">
@@ -89,13 +78,19 @@ export default function EditCta() {
                       color="primary"
                       auto
                       icon={<AiOutlineArrowLeft fill="currentColor" />}
-                      onClick={() =>
-                        navigate("/call-to-action", { replace: true })
-                      }
+                      onClick={() => navigate("/category", { replace: true })}
                     >
                       Kembali
                     </Button>
-                    <h4 className="mb-0">CTA / Edit / {name}</h4>
+                    <h4 className="mb-0">Category / Add</h4>
+                    {/* <div className="page-title-right">
+                      <ol className="breadcrumb m-0">
+                        <li className="breadcrumb-item">
+                          <a href="javascript: void(0);">Layouts</a>
+                        </li>
+                        <li className="breadcrumb-item active">Horizontal</li>
+                      </ol>
+                    </div> */}
                   </div>
                 </div>
               </div>
@@ -107,49 +102,19 @@ export default function EditCta() {
                   <div className="card">
                     <div className="card-body">
                       <div className="d-flex justify-content-between">
-                        <h4 className="card-title mb-4">
-                          Edit Call To Action{" "}
-                        </h4>
+                        <h4 className="card-title mb-4">Tambah Kategori </h4>
                       </div>
-
-                      {err.is ? (
-                        <div
-                          className="alert alert-danger alert-outline alert-dismissible fade show"
-                          role="alert"
-                        >
-                          <i className="uil uil-exclamation-octagon font-size-16 text-danger me-2" />
-                          {err.msg}
-                          <button
-                            type="button"
-                            className="btn-close"
-                            data-bs-dismiss="alert"
-                            aria-label="Close"
-                          />
-                        </div>
-                      ) : null}
-
-                      <Input
-                        fullWidth
-                        label="Nama"
-                        size="lg"
-                        placeholder="Nama"
-                        type="text"
-                        css={{ marginBottom: 20 }}
-                        name="nama"
-                        value={inputs.name}
-                        disabled
-                      />
 
                       <Input
                         clearable
                         fullWidth
-                        label="Value"
+                        label="Nama"
+                        // helperText="Please enter your name"
                         size="lg"
-                        placeholder={inputs.value}
+                        placeholder="Nama Kategori"
                         type="text"
-                        css={{ marginBottom: 18 }}
-                        name="value"
-                        value={inputs.value}
+                        css={{ marginBottom: 20 }}
+                        name="name"
                         onChange={(e) => inputHandle(e)}
                         disabled={loading}
                       />
@@ -170,14 +135,14 @@ export default function EditCta() {
                         </Button>
                       ) : (
                         <Button
-                          flat
-                          color="success"
-                          auto
-                          icon={<AiOutlineSave fill="currentColor" />}
-                          onClick={updateHandle}
-                        >
-                          Simpan
-                        </Button>
+                        flat
+                        color="success"
+                        auto
+                        icon={<AiOutlinePlus fill="currentColor" />}
+                        onClick={createHandle}
+                      >
+                        Tambah
+                      </Button>
                       )}
                     </div>
                   </div>

@@ -1,6 +1,30 @@
-import { AiOutlineBell, AiOutlineClockCircle, AiOutlineFileDone, AiOutlineFileImage, AiOutlineFundProjectionScreen, AiOutlineHdd, AiOutlineHome, AiOutlineLink, AiOutlineLogout, AiOutlineShopping } from "react-icons/ai";
+import { AiOutlineBell, AiOutlineClockCircle, AiOutlineDatabase, AiOutlineFileDone, AiOutlineFileImage, AiOutlineFundProjectionScreen, AiOutlineHdd, AiOutlineHome, AiOutlineLink, AiOutlineLogout, AiOutlineShopping } from "react-icons/ai";
+import Swal from "sweetalert2";
+import { API } from "../server/endpoint";
 
 export default function Header() {
+  const logoutHandle = async () => {
+    const { user, error } = await API.auth.logout()
+    console.log("RES LOGOUT : ", user);
+    console.log("RES LOGOUT ERR : ", error);
+
+    if (user) {
+        const Toast = Swal.mixin({
+          toast: true,
+          position: "top",
+          showConfirmButton: false,
+        });
+  
+        Toast.fire({
+          icon: "success",
+          title: "Logout success",
+        });
+  
+      setTimeout(() => {
+       window.location.replace("/")
+      }, 1500);
+    }
+  };
   return (
     <>
       <header id="page-topbar">
@@ -143,10 +167,10 @@ export default function Header() {
                     Balance : <b>Rp 1.000.000</b>
                   </span>
                 </a> */}
-                <a className="dropdown-item" href="https://mitrasouvenir.vercel.app">
+                <div className="dropdown-item" onClick={logoutHandle}>
                   <AiOutlineLogout fontSize={15} style={{ marginRight: 5, marginTop: 2}} />
                   <span className="align-middle">Logout</span>
-                </a>
+                </div>
               </div>
             </div>
           </div>
@@ -171,6 +195,24 @@ export default function Header() {
                   <li className="nav-item">
                     <a
                       className="nav-link arrow-none"
+                      href="/category"
+                    >
+                        <AiOutlineDatabase fontSize={18} />
+                      <span data-key="t-horizontal">Category</span>
+                    </a>
+                  </li>
+                  <li className="nav-item">
+                    <a
+                      className="nav-link arrow-none"
+                      href="/product"
+                    >
+                        <AiOutlineShopping fontSize={18} />
+                      <span data-key="t-horizontal">Products</span>
+                    </a>
+                  </li>
+                  <li className="nav-item">
+                    <a
+                      className="nav-link arrow-none"
                       href="/call-to-action"
                     >
                         <AiOutlineLink fontSize={18} />
@@ -184,15 +226,6 @@ export default function Header() {
                     >
                         <AiOutlineFundProjectionScreen fontSize={18} />
                       <span data-key="t-horizontal">Slider Image</span>
-                    </a>
-                  </li>
-                  <li className="nav-item">
-                    <a
-                      className="nav-link arrow-none"
-                      href="/product"
-                    >
-                        <AiOutlineShopping fontSize={18} />
-                      <span data-key="t-horizontal">Produk</span>
                     </a>
                   </li>
                   {/* <li className="nav-item dropdown">
