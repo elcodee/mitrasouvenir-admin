@@ -8,11 +8,17 @@ import FeaturedProduct from "./pages/product/featured";
 import SlideShow from "./pages/slide_show";
 import AddSlides from "./pages/slide_show/Add";
 import EditSlides from "./pages/slide_show/Edit";
+import CallToAction from "./pages/call_action";
+import EditCta from "./pages/call_action/Edit";
 
 function App() {
   return (
     <Routes>
       <Route path="/" element={<Dashboard />} />
+
+      {/* Call To Action */}
+      <Route path="/call-to-action" element={<CallToAction />} />
+      <Route path="/call-to-action/edit" element={<EditCta />} />
 
       {/* Slide Show Carousel */}
       <Route path="/slide-show" element={<SlideShow />} />
