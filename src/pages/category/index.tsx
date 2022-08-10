@@ -14,10 +14,10 @@ import useLogic from "./Logic";
 import DeleteModal from "./modal/Delete";
 
 export default function Category() {
-  const { datas, setLoading, loading, deleteCategoryByID } = useLogic();
+  const { datas, setLoading, loading, deleteCategoryByID }: any = useLogic();
   let navigate = useNavigate();
 
-  const actions = {
+  const actions: any = {
     deleteCategoryByID,
     loading,
     setLoading

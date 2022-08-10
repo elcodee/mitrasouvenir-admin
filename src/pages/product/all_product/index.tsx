@@ -1,4 +1,4 @@
-import { Button, Input } from "@nextui-org/react";
+import { Button, Input, Loading, Text } from "@nextui-org/react";
 import {
   AiOutlineArrowLeft,
   AiOutlineDelete,
@@ -12,9 +12,17 @@ import { useNavigate } from "react-router-dom";
 import Footer from "../../../components/Footer";
 import Header from "../../../components/Header";
 import DeleteModal from "./modal/Delete";
+import useLogic from "../Logic";
 
 export default function AllProduct() {
   let navigate = useNavigate();
+  const { cat, datas, setLoading, loading, deleteProductByID }: any = useLogic();
+
+  const actions: any = {
+    deleteProductByID,
+    loading,
+    setLoading
+  }
 
   return (
     <>
@@ -76,9 +84,15 @@ export default function AllProduct() {
                           <option selected disabled>
                             Pilih kategori
                           </option>
-                          <option value="Tumblr">Tumblr</option>
-                          <option value="Mug">Mug</option>
-                          <option value="Glass">Glass</option>
+                          {
+                            cat ?
+                            cat.map((item: any, index: any) => {
+                              return(
+                                <option value={item.name}>{item.name}</option>
+                              )
+                            }) :
+                            null
+                          }
                         </select>
                         <label htmlFor="floatingSelect">Filter Kategori</label>
                       </div>
@@ -103,45 +117,65 @@ export default function AllProduct() {
                           </thead>
                           {/* end thead */}
                           <tbody>
+                            {
+                              loading ?
+                              <tr>
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                              <td>
+                              <Loading
+                                    type="points-opacity"
+                                    size="xl"
+                                    color="primary"
+                                  >
+                                    <Text h5 color="primary">
+                                      loading ...
+                                    </Text>
+                                  </Loading>
+                              </td>
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                            </tr> : 
+                            datas.map((item: any, index: any) => {
+                              return(
                             <tr>
                               <td>
                                 <div className="d-flex align-items-center">
                                   <div className="me-2">
                                     <img
-                                      src="https://files.elcodee.com/mitrasouvenir/images/product-07.jpg"
+                                      src={item.prod_thumb}
                                       className="avatar-md img-thumbnail"
                                       alt="Error"
                                     />
                                   </div>
                                 </div>
                               </td>
-                              <td className="fw-medium">TMB-001</td>
-                              <td className="fw-medium">Tumblr 1</td>
-                              <td className="fw-medium">Rp 235.000</td>
-                              <td className="fw-medium">831 x</td>
+                              <td className="fw-medium">{item.prod_code}</td>
+                              <td className="fw-medium">{item.prod_name}</td>
+                              <td className="fw-medium">Rp {parseInt(item.prod_price).toLocaleString('id')}</td>
+                              <td className="fw-medium">{parseInt(item.prod_see).toLocaleString('id')} x</td>
                               <td>
-                                <a href="#!">
-                                  {/* <i className="mdi mdi-dots-horizontal font-size-18 text-muted" /> */}
                                   <button
                                     type="button"
                                     className="btn btn-outline-secondary"
                                     onClick={() =>
-                                      navigate("/products/edit", {
+                                      navigate(`/products/edit/${item.prod_code}`, {
                                         replace: true,
                                       })
                                     }
                                   >
                                     <AiOutlineEdit fontSize={20} />
                                   </button>
-                                </a>
                               </td>
                               <td>
-                                <a href="#!">
-                                  {/* <i className="mdi mdi-dots-horizontal font-size-18 text-muted" /> */}
-                                  <DeleteModal />
-                                </a>
+                                  <DeleteModal id={item._id} name={item.prod_name} img={item.prod_thumb} action={actions} />
                               </td>
                             </tr>
+                              )
+                            })
+                            }
                             {/* end /tr */}
                           </tbody>
                           {/* end tbody */}

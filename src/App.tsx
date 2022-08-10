@@ -1,4 +1,4 @@
-import { Route, Routes, useNavigate, useNavigationType } from "react-router-dom";
+import { Route, Routes, Navigate, useNavigationType } from "react-router-dom";
 import Dashboard from "./pages/dashboard";
 import Product from "./pages/product";
 import AddProduct from "./pages/product/all_product/Add";
@@ -57,7 +57,7 @@ function App() {
         <Route path="/product" element={isLog ? <Product />  : <Login />} />
         <Route path="/products" element={isLog ? <AllProduct />  : <Login />} />
         <Route path="/products/add" element={isLog ? <AddProduct />  : <Login />} />
-        <Route path="/products/edit" element={isLog ? <EditProduct />  : <Login />} />
+        <Route path="/products/edit/:code" element={isLog ? <EditProduct />  : <Login />} />
   
         <Route path="/products/featured" element={isLog ? <FeaturedProduct />  : <Login />} />
       </Routes>

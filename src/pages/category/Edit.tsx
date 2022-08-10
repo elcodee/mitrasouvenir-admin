@@ -79,7 +79,7 @@ export default function EditCategory() {
         name: name,
       });
     }
-  }, [data.value]);
+  }, [data.name]);
   return (
     <>
       <div id="layout-wrapper">

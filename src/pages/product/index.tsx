@@ -1,11 +1,16 @@
-import { AiOutlineDelete, AiOutlineEdit, AiOutlineEye, AiOutlineHdd, AiOutlinePlus, AiOutlineShopping } from "react-icons/ai";
+import {
+  AiOutlineDelete,
+  AiOutlineEdit,
+  AiOutlineEye,
+  AiOutlineHdd,
+  AiOutlinePlus,
+  AiOutlineShopping,
+} from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
 import Footer from "../../components/Footer";
 import Header from "../../components/Header";
 
 export default function Product() {
-  let navigate = useNavigate();
-
   return (
     <>
       <div id="layout-wrapper">
@@ -23,44 +28,57 @@ export default function Product() {
                 </div>
               </div>
               {/* end page title */}
-              
+
               {/* end row */}
               <div className="row">
+                <div className="col-lg-4">
+                  <div className="card">
+                    <h4 className="card-header">Semua Produk</h4>
+                    <div className="card-body">
+                      <h4 className="card-title mb-1">95 Produk Terdisplay</h4>
+                      <p className="card-text">
+                        Mengelola seluruh produk yang ada di halaman catalog.
+                      </p>
+                      <a href="/products" className="btn btn-primary">
+                        Kelola
+                      </a>
+                    </div>
+                  </div>
+                </div>
 
-              <div className="col-lg-4">
-  <div className="card">
-    <h4 className="card-header">Semua Produk</h4>
-    <div className="card-body">
-      <h4 className="card-title mb-1">95 Produk Terdisplay</h4>
-      <p className="card-text">Mengelola seluruh produk yang ada di halaman catalog.</p>
-      <a href="/products" className="btn btn-primary">Kelola</a>
-    </div>
-  </div>
-</div>
+                <div className="col-lg-4">
+                  <div className="card">
+                    <h4 className="card-header">Produk Featured</h4>
+                    <div className="card-body">
+                      <h4 className="card-title mb-1">
+                        5 Produk Featured Terdisplay
+                      </h4>
+                      <p className="card-text">
+                        Mengelola seluruh produk featured di halaman homepage.
+                      </p>
+                      <a href="/products/featured" className="btn btn-primary">
+                        Kelola
+                      </a>
+                    </div>
+                  </div>
+                </div>
 
-<div className="col-lg-4">
-  <div className="card">
-    <h4 className="card-header">Produk Featured</h4>
-    <div className="card-body">
-      <h4 className="card-title mb-1">5 Produk Featured Terdisplay</h4>
-      <p className="card-text">Mengelola seluruh produk featured di halaman homepage.</p>
-      <a href="/products/featured" className="btn btn-primary">Kelola</a>
-    </div>
-  </div>
-</div>
-
-<div className="col-lg-4">
-  <div className="card">
-    <h4 className="card-header">Produk Sering Dilihat</h4>
-    <div className="card-body">
-      <h4 className="card-title mb-1">10 Produk Sering Dilihat</h4>
-      <p className="card-text">Mengelola seluruh produk yang dilihat terbanyak.</p>
-      <a href="#" className="btn btn-primary">Kelola</a>
-    </div>
-  </div>
-</div>
-
-
+                <div className="col-lg-4">
+                  <div className="card">
+                    <h4 className="card-header">Produk Sering Dilihat</h4>
+                    <div className="card-body">
+                      <h4 className="card-title mb-1">
+                        10 Produk Sering Dilihat
+                      </h4>
+                      <p className="card-text">
+                        Mengelola seluruh produk yang dilihat terbanyak.
+                      </p>
+                      <a href="#" className="btn btn-primary">
+                        Kelola
+                      </a>
+                    </div>
+                  </div>
+                </div>
               </div>
               {/* end row */}
             </div>{" "}
@@ -69,7 +87,6 @@ export default function Product() {
           {/* End Page-content */}
           <Footer />
         </div>
-        
       </div>
     </>
   );

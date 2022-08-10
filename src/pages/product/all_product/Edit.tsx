@@ -10,55 +10,80 @@ import {
   AiOutlineSave,
   AiOutlineShopping,
 } from "react-icons/ai";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Footer from "../../../components/Footer";
 import Header from "../../../components/Header";
+import useLogic from "../Logic";
 
 export default function EditProduct() {
   const [inputs, setInputs] = useState<any>({});
-  const [preview, setPreview] = useState<any>("https://files.elcodee.com/mitrasouvenir/images/product-07.jpg")
+  const [preview, setPreview] = useState<any>({
+    prod_thumb: null,
+    prod_img1: null,
+    prod_img2: null,
+    prod_img3: null,
+  });
   let navigate = useNavigate();
+  let { code } = useParams();
+  const { cat, data, setLoading, loading, getProductByCode }: any = useLogic();
 
   const inputsHandle = async (e: any) => {
     setInputs({
       ...inputs,
-      [e.target.name]: e.target.value
-    })
+      [e.target.name]: e.target.value,
+    });
   };
 
-  const onSelectFile = (e: any) => {
-        if (!e.target.files || e.target.files.length === 0) {
-          setInputs({
-            ...inputs,
-            banner: undefined
-          })
-            return
-        }
-
-        // I've kept this example simple by using the first image instead of multiple
-        setInputs({
-          ...inputs,
-          banner: e.target.files[0]
-        })
+  const imageChange = (e: any) => {
+    if (e.target.files && e.target.files.length > 0) {
+      const imgPrev = URL.createObjectURL(e.target.files[0])
+      setPreview({
+        ...preview,
+        [e.target.name]: imgPrev,
+      });
     }
 
-    // console.log("IMG : ", inputs);
+    setInputs({
+      ...inputs,
+      [e.target.name]: e.target.files[0],
+    });
+  };
+
+  // console.log("DATA : ", inputs);
   
+
   useEffect(() => {
-    if (!inputs.banner) {
+    let mount = true;
+
+    if (mount) {
+      getProductByCode(code);
+
       setInputs({
         ...inputs,
-        banner: undefined
-      })
-        return
+        prod_name: data.prod_name,
+        prod_code: data.prod_code,
+        prod_price: data.prod_price,
+        prod_stock: data.prod_stock,
+        prod_see: data.prod_see,
+        prod_sell: data.prod_sell,
+        prod_shopee: data.prod_shopee,
+        prod_tokopedia: data.prod_tokopedia,
+        prod_category: data.prod_category,
+        prod_desc: data.prod_desc,
+      });
+
+      setPreview({
+        prod_thumb: data.prod_thumb,
+        prod_img1: data.prod_img1,
+        prod_img2: data.prod_img2,
+        prod_img3: data.prod_img3,
+      });
     }
 
-    const objectUrl = URL.createObjectURL(inputs.banner)
-    setPreview(objectUrl)
-
-    // free memory when ever this component is unmounted
-    return () => URL.revokeObjectURL(objectUrl)
-}, [inputs.banner])
+    return () => {
+      mount = false;
+    };
+  }, [data.prod_code]);
 
   return (
     <>
@@ -81,7 +106,7 @@ export default function EditProduct() {
                     >
                       Kembali
                     </Button>
-                    <h4 className="mb-0">Produk / Edit / []</h4>
+                    <h4 className="mb-0">Produk / Edit / {inputs.prod_name}</h4>
                     {/* <div className="page-title-right">
                       <ol className="breadcrumb m-0">
                         <li className="breadcrumb-item">
@@ -106,7 +131,7 @@ export default function EditProduct() {
 
                       <Input
                         clearable
-                        fullWidth 
+                        fullWidth
                         label="Nama Produk"
                         // helperText="Please enter your name"
                         size="lg"
@@ -114,13 +139,13 @@ export default function EditProduct() {
                         type="text"
                         css={{ marginBottom: 20 }}
                         name="prod_name"
-                        value="Tumblr 1"
+                        value={inputs.prod_name}
                         onChange={(e) => inputsHandle(e)}
                       />
 
                       <Input
                         clearable
-                        fullWidth 
+                        fullWidth
                         label="Kode Produk"
                         // helperText="Please enter your name"
                         size="lg"
@@ -128,13 +153,13 @@ export default function EditProduct() {
                         type="text"
                         css={{ marginBottom: 18 }}
                         name="prod_code"
-                        value="TMB-001"
+                        value={inputs.prod_code}
                         onChange={(e) => inputsHandle(e)}
                       />
 
                       <Input
                         clearable
-                        fullWidth 
+                        fullWidth
                         label="Harga Produk"
                         // helperText="Please enter your name"
                         size="lg"
@@ -142,13 +167,13 @@ export default function EditProduct() {
                         type="number"
                         css={{ marginBottom: 18 }}
                         name="prod_price"
-                        value="235000"
+                        value={inputs.prod_price}
                         onChange={(e) => inputsHandle(e)}
                       />
-                      
+
                       <Input
                         clearable
-                        fullWidth 
+                        fullWidth
                         label="Stok Produk"
                         // helperText="Please enter your name"
                         size="lg"
@@ -156,13 +181,13 @@ export default function EditProduct() {
                         type="number"
                         css={{ marginBottom: 18 }}
                         name="prod_stock"
-                        value="9"
+                        value={inputs.prod_stock}
                         onChange={(e) => inputsHandle(e)}
                       />
 
-<Input
+                      <Input
                         clearable
-                        fullWidth 
+                        fullWidth
                         label="Dilihat"
                         // helperText="Please enter your name"
                         size="lg"
@@ -170,13 +195,13 @@ export default function EditProduct() {
                         type="number"
                         css={{ marginBottom: 18 }}
                         name="prod_see"
-                        value="891"
+                        value={inputs.prod_see}
                         onChange={(e) => inputsHandle(e)}
                       />
 
-<Input
+                      <Input
                         clearable
-                        fullWidth 
+                        fullWidth
                         label="Terjual"
                         // helperText="Please enter your name"
                         size="lg"
@@ -184,13 +209,13 @@ export default function EditProduct() {
                         type="number"
                         css={{ marginBottom: 18 }}
                         name="prod_sell"
-                        value="172"
+                        value={inputs.prod_sell}
                         onChange={(e) => inputsHandle(e)}
                       />
 
-<Input
+                      <Input
                         clearable
-                        fullWidth 
+                        fullWidth
                         label="Link Shopee"
                         // helperText="Please enter your name"
                         size="lg"
@@ -198,13 +223,13 @@ export default function EditProduct() {
                         type="text"
                         css={{ marginBottom: 18 }}
                         name="prod_shopee"
-                        value="https://shopee.com/xxxxxx"
+                        value={inputs.prod_shopee}
                         onChange={(e) => inputsHandle(e)}
                       />
 
-<Input
+                      <Input
                         clearable
-                        fullWidth 
+                        fullWidth
                         label="Link Tokopedia"
                         // helperText="Please enter your name"
                         size="lg"
@@ -212,41 +237,55 @@ export default function EditProduct() {
                         type="text"
                         css={{ marginBottom: 18 }}
                         name="prod_tokped"
-                        value="https://tokopedia.com/xxxxxx"
+                        value={inputs.prod_tokopedia}
                         onChange={(e) => inputsHandle(e)}
                       />
 
                       <div className="form-floating mb-3">
-                        <select className="form-select" id="kategori"
-                        name="prod_cat"
-                        onChange={(e) => inputsHandle(e)}
+                        <select
+                          className="form-select"
+                          id="kategori"
+                          name="prod_category"
+                          onChange={(e) => inputsHandle(e)}
                         >
-                          <option disabled>
-                            Pilih kategori
+                          <option selected>
+                          {/* {inputs.prod_category._id} */}
                           </option>
-                          <option value="Tumblr" selected>Tumblr</option>
-                          <option value="Mug">Mug</option>
-                          <option value="Glass">Glass</option>
+                          <hr />
+                          {
+                            cat ?
+                            cat.map((item: any, index: any) => {
+                              return(
+                                <option value={item.name}>{item.name}</option>
+                              )
+                            }) :
+                            null
+                          }
                         </select>
                         <label htmlFor="kategori">Kategori</label>
                       </div>
 
                       <div className="form-floating mb-3">
-  <textarea className="form-control" placeholder=" " name="prod_desc" id="desc" style={{height: '100px'}} defaultValue={"Complexion-perfecting natural foundation enriched with antioxidant-packed superfruits, vitamins, and other skin-nourishing nutrients. Creamy liquid formula sets with a pristine matte finish for soft, velvety smooth skin."} />
-  <label htmlFor="desc">Deskripsi Produk</label>
-</div>
+                        <textarea
+                          className="form-control"
+                          placeholder=" "
+                          name="prod_desc"
+                          id="desc"
+                          style={{ height: "100px" }}
+                          defaultValue={inputs.prod_desc}
+                        />
+                        <label htmlFor="desc">Deskripsi Produk</label>
+                      </div>
 
-
-                      {
-                        preview ?
+                      {preview ? (
                         <Image
                           showSkeleton
                           width={320}
                           height={180}
-                          src={preview}
+                          src={preview.prod_thumb}
                           alt="Default Image"
-                        /> : null
-                      }
+                        />
+                      ) : null}
 
                       <Input
                         fullWidth
@@ -256,19 +295,18 @@ export default function EditProduct() {
                         type="file"
                         css={{ marginTop: 10, marginBottom: 40 }}
                         name="prod_thumb"
-                        onChange={(e) => onSelectFile(e)}
+                        onChange={(e) => imageChange(e)}
                       />
 
-{
-                        preview ?
+                      {preview ? (
                         <Image
                           showSkeleton
                           width={320}
                           height={180}
-                          src={preview}
+                          src={preview.prod_img1}
                           alt="Default Image"
-                        /> : null
-                      }
+                        />
+                      ) : null}
 
                       <Input
                         fullWidth
@@ -278,19 +316,18 @@ export default function EditProduct() {
                         type="file"
                         css={{ marginTop: 10, marginBottom: 40 }}
                         name="prod_img1"
-                        onChange={(e) => onSelectFile(e)}
+                        onChange={(e) => imageChange(e)}
                       />
 
-{
-                        preview ?
+                      {preview ? (
                         <Image
                           showSkeleton
                           width={320}
                           height={180}
-                          src={preview}
+                          src={preview.prod_img2}
                           alt="Default Image"
-                        /> : null
-                      }
+                        />
+                      ) : null}
 
                       <Input
                         fullWidth
@@ -300,19 +337,18 @@ export default function EditProduct() {
                         type="file"
                         css={{ marginTop: 10, marginBottom: 40 }}
                         name="prod_img2"
-                        onChange={(e) => onSelectFile(e)}
+                        onChange={(e) => imageChange(e)}
                       />
 
-{
-                        preview ?
+                      {preview ? (
                         <Image
                           showSkeleton
                           width={320}
                           height={180}
-                          src={preview}
+                          src={preview.prod_img3}
                           alt="Default Image"
-                        /> : null
-                      }
+                        />
+                      ) : null}
 
                       <Input
                         fullWidth
@@ -322,7 +358,7 @@ export default function EditProduct() {
                         type="file"
                         css={{ marginTop: 10, marginBottom: 40 }}
                         name="prod_img3"
-                        onChange={(e) => onSelectFile(e)}
+                        onChange={(e) => imageChange(e)}
                       />
 
                       <Button

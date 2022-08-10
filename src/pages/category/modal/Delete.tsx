@@ -1,16 +1,12 @@
 import React from "react";
 import {
   Modal,
-  Input,
-  Row,
-  Checkbox,
   Button,
   Text,
   Card,
-  Grid,
   Col,
 } from "@nextui-org/react";
-import { AiOutlineDelete, AiOutlinePlus } from "react-icons/ai";
+import { AiOutlineDelete } from "react-icons/ai";
 import Swal from "sweetalert2";
 
 export default function DeleteModal({ name, id, action }: any) {
