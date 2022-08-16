@@ -8,7 +8,7 @@ const Index = () => {
 
     const getCta = async () => {
         setLoading(true);
-        const { data, error } = await API.service('CallToAction').find();
+        const { data, error } = await API.service('Links').find();
 
         if(data){
             setDatas(data);
@@ -20,7 +20,7 @@ const Index = () => {
 
     const getCtaByName = async (name: any) => {
         setLoading(true);
-        const { data, error } = await API.service('CallToAction').find({
+        const { data, error } = await API.service('Links').find({
             where: { name: name },
           })
 
@@ -34,7 +34,7 @@ const Index = () => {
 
     const updateCtaByID = async (id: any, formData: any) => {
         setLoading(true);
-        const { data, error } = await API.service('CallToAction').updateById(id, {
+        const { data, error } = await API.service('Links').updateById(id, {
             ...formData
           })
 

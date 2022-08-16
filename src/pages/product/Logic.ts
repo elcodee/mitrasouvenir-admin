@@ -21,7 +21,7 @@ const Index = () => {
 
   const getProducts = async () => {
     setLoading(true);
-    const { data, error } = await API.service("Products").find({
+    const { data, error } = await API.service("Prods").find({
       lookup: "*",
       sort: { _id: -1 },
     });
@@ -48,7 +48,7 @@ const Index = () => {
 
   const getProductByCode = async (code: any) => {
     setLoading(true);
-    const { data, error } = await API.service("Products").find({
+    const { data, error } = await API.service("Prods").find({
       where: { prod_code: code },
       lookup: "*",
     });
@@ -87,11 +87,11 @@ const Index = () => {
     let res4: any = await API.storage.upload(img3);
 
     if (res1.data.url && res2.data.url && res3.data.url && res4.data.url) {
-      const { data, error } = await API.service("Products").create({
+      const { data, error } = await API.service("Prods").create({
         prod_name: formData.prod_name,
         prod_code: formData.prod_code,
-        prod_price: formData.prod_price,
-        prod_stock: formData.prod_stock,
+        prod_price: parseInt(formData.prod_price),
+        prod_stock: parseInt(formData.prod_stock),
         prod_see: parseInt(formData.prod_see),
         prod_sell: parseInt(formData.prod_sell),
         prod_shopee: formData.prod_shopee,
@@ -118,25 +118,124 @@ const Index = () => {
     }
   };
 
-  const updateCategoryByID = async (id: any, formData: any) => {
+  const updateProductByID = async (id: any, formData: any, uploadImg: any) => {
     setLoading(true);
-    const { data, error } = await API.service("Category").updateById(id, {
-      ...formData,
-    });
+    console.log("FORM DATA : ", formData);
+    console.log("FORM IMG : ", uploadImg);
+    if(uploadImg){
+      let res1: any = await API.storage.upload(uploadImg.prod_thumb);
+      let res2: any = await API.storage.upload(uploadImg.prod_img1);
+      let res3: any = await API.storage.upload(uploadImg.prod_img2);
+      let res4: any = await API.storage.upload(uploadImg.prod_img3);
 
-    if (data) {
-      setData({ ...data[0] });
-      setTimeout(() => {
-        setLoading(false);
-      }, 1500);
+      if(res1.data.url){
+        const { data, error } = await API.service("Prods").updateById(id, {
+          ...formData,
+          prod_category: [formData.prod_category],
+          prod_price: parseInt(formData.prod_price),
+          prod_see: parseInt(formData.prod_see),
+          prod_sell: parseInt(formData.prod_sell),
+          prod_stock: parseInt(formData.prod_stock),
+          prod_thumb: [{ url: res1.data.url, fileName: res1.data.fileName }],
+        });
 
-      return data;
+        if(data){
+          setTimeout(() => {
+              setLoading(false);
+            }, 1500);
+          //   console.log("RES PROD : ", data);
+            console.log("RES PROD ERR : ", error);
+            return data;
+        }
+      }
+
+      if(res2.data.url){
+        const { data, error } = await API.service("Prods").updateById(id, {
+          ...formData,
+          prod_category: [formData.prod_category],
+          prod_price: parseInt(formData.prod_price),
+          prod_see: parseInt(formData.prod_see),
+          prod_sell: parseInt(formData.prod_sell),
+          prod_stock: parseInt(formData.prod_stock),
+          prod_img1: [{ url: res2.data.url, fileName: res2.data.fileName}],
+        });
+
+        if(data){
+          setTimeout(() => {
+              setLoading(false);
+            }, 1500);
+          //   console.log("RES PROD : ", data);
+            console.log("RES PROD ERR : ", error);
+            return data;
+        }
+      }
+
+      if(res3.data.url){
+        const { data, error } = await API.service("Prods").updateById(id, {
+          ...formData,
+          prod_category: [formData.prod_category],
+          prod_price: parseInt(formData.prod_price),
+          prod_see: parseInt(formData.prod_see),
+          prod_sell: parseInt(formData.prod_sell),
+          prod_stock: parseInt(formData.prod_stock),
+          prod_img2: [{ url: res3.data.url, fileName: res3.data.fileName}],
+        });
+
+        if(data){
+          setTimeout(() => {
+              setLoading(false);
+            }, 1500);
+          //   console.log("RES PROD : ", data);
+            console.log("RES PROD ERR : ", error);
+            return data;
+        }
+      }
+
+      if(res4.data.url){
+        const { data, error } = await API.service("Prods").updateById(id, {
+          ...formData,
+          prod_category: [formData.prod_category],
+          prod_price: parseInt(formData.prod_price),
+          prod_see: parseInt(formData.prod_see),
+          prod_sell: parseInt(formData.prod_sell),
+          prod_stock: parseInt(formData.prod_stock),
+          prod_img3: [{ url: res4.data.url, fileName: res4.data.fileName}],
+        });
+
+        if(data){
+          setTimeout(() => {
+              setLoading(false);
+            }, 1500);
+          //   console.log("RES PROD : ", data);
+            console.log("RES PROD ERR : ", error);
+            return data;
+        }
+      }
+    } else {
+      const { data, error } = await API.service("Prods").updateById(id, {
+        ...formData,
+        prod_category: [formData.prod_category],
+        prod_price: parseInt(formData.prod_price),
+        prod_see: parseInt(formData.prod_see),
+        prod_sell: parseInt(formData.prod_sell),
+        prod_stock: parseInt(formData.prod_stock),
+      });
+  
+      if (data) {
+        setData({ ...data[0] });
+        setTimeout(() => {
+          setLoading(false);
+        }, 1500);
+  
+        return data;
+      }
     }
+    
   };
 
   const deleteProductByID = async (id: any) => {
     setLoading(true);
-    const { data, error } = await API.service("Products").deleteById(id);
+    const { data, error } = await API.service("Prods").deleteById(id);
 
     if (data) {
     //   setData({ ...data[0] });
@@ -169,7 +268,7 @@ const Index = () => {
     loading,
     getProductByCode,
     createProduct,
-    updateCategoryByID,
+    updateProductByID,
     deleteProductByID,
   };
 };

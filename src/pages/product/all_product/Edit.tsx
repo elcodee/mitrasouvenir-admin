@@ -11,6 +11,7 @@ import {
   AiOutlineShopping,
 } from "react-icons/ai";
 import { useNavigate, useParams } from "react-router-dom";
+import Swal from "sweetalert2";
 import Footer from "../../../components/Footer";
 import Header from "../../../components/Header";
 import useLogic from "../Logic";
@@ -23,9 +24,11 @@ export default function EditProduct() {
     prod_img2: null,
     prod_img3: null,
   });
+  const [uploadImg, setUploadImg] = useState<any>();
+  const [catSelect, setCatSelect] = useState<boolean>(true);
   let navigate = useNavigate();
   let { code } = useParams();
-  const { cat, data, setLoading, loading, getProductByCode }: any = useLogic();
+  const { cat, data, setLoading, loading, getProductByCode, updateProductByID }: any = useLogic();
 
   const inputsHandle = async (e: any) => {
     setInputs({
@@ -41,6 +44,11 @@ export default function EditProduct() {
         ...preview,
         [e.target.name]: imgPrev,
       });
+
+      setUploadImg({
+        ...uploadImg,
+        [e.target.name]: e.target.files[0],
+      });
     }
 
     setInputs({
@@ -49,7 +57,44 @@ export default function EditProduct() {
     });
   };
 
-  // console.log("DATA : ", inputs);
+  const updateHandle = async () => {
+    if(
+      !inputs.prod_name ||
+        !inputs.prod_code ||
+        !inputs.prod_price ||
+        !inputs.prod_stock ||
+        !inputs.prod_see ||
+        !inputs.prod_sell ||
+        !inputs.prod_shopee ||
+        !inputs.prod_tokopedia ||
+        !inputs.prod_category ||
+        !inputs.prod_desc
+    ) {
+      console.log("EMPTY");
+    } else {
+      let res: any = await updateProductByID(data._id, inputs, uploadImg);
+      console.log("RES : ", res);
+      if (res) {
+        setTimeout(() => {
+          const Toast = Swal.mixin({
+            toast: true,
+            position: "top",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+
+          Toast.fire({
+            icon: "success",
+            title: "Product Updated",
+          });
+        }, 1500);
+
+        setTimeout(() => {
+          navigate("/products", { replace: true });
+        }, 2500);
+      }
+    }
+  }
   
 
   useEffect(() => {
@@ -58,26 +103,29 @@ export default function EditProduct() {
     if (mount) {
       getProductByCode(code);
 
-      setInputs({
-        ...inputs,
-        prod_name: data.prod_name,
-        prod_code: data.prod_code,
-        prod_price: data.prod_price,
-        prod_stock: data.prod_stock,
-        prod_see: data.prod_see,
-        prod_sell: data.prod_sell,
-        prod_shopee: data.prod_shopee,
-        prod_tokopedia: data.prod_tokopedia,
-        prod_category: data.prod_category,
-        prod_desc: data.prod_desc,
-      });
-
-      setPreview({
-        prod_thumb: data.prod_thumb,
-        prod_img1: data.prod_img1,
-        prod_img2: data.prod_img2,
-        prod_img3: data.prod_img3,
-      });
+      if(data.prod_category){
+        setInputs({
+          ...inputs,
+          prod_name: data.prod_name,
+          prod_code: data.prod_code,
+          prod_price: data.prod_price,
+          prod_stock: data.prod_stock,
+          prod_see: data.prod_see,
+          prod_sell: data.prod_sell,
+          prod_shopee: data.prod_shopee,
+          prod_tokopedia: data.prod_tokopedia,
+          prod_category: data.prod_category,
+          prod_desc: data.prod_desc,
+        });
+  
+        setPreview({
+          prod_thumb: data.prod_thumb,
+          prod_img1: data.prod_img1,
+          prod_img2: data.prod_img2,
+          prod_img3: data.prod_img3,
+        });
+        console.log("DATA : ", data.prod_category);
+      }
     }
 
     return () => {
@@ -236,7 +284,7 @@ export default function EditProduct() {
                         placeholder="Link Tokopedia"
                         type="text"
                         css={{ marginBottom: 18 }}
-                        name="prod_tokped"
+                        name="prod_tokopedia"
                         value={inputs.prod_tokopedia}
                         onChange={(e) => inputsHandle(e)}
                       />
@@ -246,17 +294,20 @@ export default function EditProduct() {
                           className="form-select"
                           id="kategori"
                           name="prod_category"
-                          onChange={(e) => inputsHandle(e)}
+                          onChange={(e) => {
+                            inputsHandle(e)
+                            setCatSelect(false);
+                          }}
                         >
                           <option selected>
-                          {/* {inputs.prod_category._id} */}
-                          </option>
+                            Pilih ...
+                            </option>
                           <hr />
                           {
                             cat ?
                             cat.map((item: any, index: any) => {
                               return(
-                                <option value={item.name}>{item.name}</option>
+                                <option value={item._id}>{item.name}</option>
                               )
                             }) :
                             null
@@ -366,8 +417,12 @@ export default function EditProduct() {
                         color="success"
                         auto
                         icon={<AiOutlineSave fill="currentColor" />}
+                        onClick={updateHandle}
+                        disabled={
+                          preview.prod_thumb && preview.prod_img1 && preview.prod_img2 && preview.prod_img3 && !catSelect ? false : true
+                        }
                       >
-                        Simpan
+                        Update
                       </Button>
                     </div>
                   </div>
